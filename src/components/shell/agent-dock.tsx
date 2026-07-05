@@ -179,7 +179,7 @@ export function AgentDock() {
                 <Bot className="h-5 w-5" aria-hidden />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="font-display text-sm font-semibold">Forza Nishin</p>
+                <p className="font-display text-sm font-semibold">Companion</p>
                 <p className="truncate text-xs text-fg-subtle">
                   {listening ? "Listening…" : busy ? "Thinking…" : "Multilingual assistant"}
                 </p>

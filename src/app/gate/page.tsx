@@ -58,7 +58,7 @@ function GateForm() {
         </motion.span>
 
         <h1 className="text-center font-display text-xl font-bold tracking-tight">
-          Forza Nishin is private
+          Companion is private
         </h1>
         <p className="mb-6 mt-1.5 text-center text-sm text-fg-muted">
           Enter the passphrase to come in.

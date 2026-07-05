@@ -7,7 +7,7 @@ export function Logo({ compact = false, className }: { compact?: boolean; classN
     <Link
       href="/"
       className={cn("group flex items-center gap-2.5 outline-offset-4", className)}
-      aria-label="Forza Nishin home"
+      aria-label="Companion home"
     >
       <span
         className="flex h-9 w-9 items-center justify-center rounded-lg text-white
@@ -18,7 +18,7 @@ export function Logo({ compact = false, className }: { compact?: boolean; classN
       </span>
       {!compact && (
         <span className="font-display text-lg font-bold tracking-tight">
-          Forza<span className="gradient-text">Nishin</span>
+          Companion
         </span>
       )}
     </Link>

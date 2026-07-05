@@ -69,7 +69,7 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="pt-4 font-mono text-[11px] uppercase tracking-[0.25em] text-fg-subtle"
         >
-          Forza Nishin — Personal AI · Career / Lifestyle · Est. 2026
+          Companion — Personal AI · Career / Lifestyle · Est. 2026
         </motion.p>
 
         {/* Massive editorial headline */}

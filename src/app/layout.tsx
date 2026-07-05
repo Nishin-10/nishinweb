@@ -21,8 +21,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Forza Nishin — Career & Lifestyle AI",
-    template: "%s · Forza Nishin",
+    default: "Companion — Career & Lifestyle AI",
+    template: "%s · Companion",
   },
   description:
     "One AI companion for your career and downtime: job search with CV tailoring, book, film and game picks, brain games, and a daily tech briefing.",
