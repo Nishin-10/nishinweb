@@ -27,6 +27,7 @@ import { TriviaGame } from "./trivia-game";
 import { ReflexGame } from "./reflex-game";
 import { BrainrotGame } from "./brainrot-game";
 import { BlockfallGame } from "./blockfall-game";
+import { FriendsCard } from "./multiplayer/friends-card";
 
 type GameId = "sudoku" | "chess" | "2048" | "memory" | "trivia" | "reflex" | "brainrot" | "blockfall";
 
@@ -133,6 +134,7 @@ export function PlayClient() {
 
   return (
     <div className="space-y-8">
+      <FriendsCard />
       {(["Brain training", "Quick fun"] as const).map((group) => (
         <section key={group} aria-label={group}>
           <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-fg-subtle">

@@ -4,6 +4,7 @@ import {
   Gamepad2,
   LayoutDashboard,
   Newspaper,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 
@@ -44,5 +45,11 @@ export const navItems: NavItem[] = [
     label: "News",
     icon: Newspaper,
     description: "Daily tech and AI briefing",
+  },
+  {
+    href: "/tools",
+    label: "Tools",
+    icon: Wrench,
+    description: "Summarizer and document writer",
   },
 ];
