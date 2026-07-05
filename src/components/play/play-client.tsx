@@ -7,6 +7,7 @@ import {
   BarChart3,
   Brain,
   Crown,
+  Boxes,
   Flame,
   Grid3X3,
   HelpCircle,
@@ -25,8 +26,9 @@ import { MemoryGame } from "./memory-game";
 import { TriviaGame } from "./trivia-game";
 import { ReflexGame } from "./reflex-game";
 import { BrainrotGame } from "./brainrot-game";
+import { BlockfallGame } from "./blockfall-game";
 
-type GameId = "sudoku" | "chess" | "2048" | "memory" | "trivia" | "reflex" | "brainrot";
+type GameId = "sudoku" | "chess" | "2048" | "memory" | "trivia" | "reflex" | "brainrot" | "blockfall";
 
 const GAMES: {
   id: GameId;
@@ -39,6 +41,7 @@ const GAMES: {
   { id: "sudoku", title: "Sudoku", tagline: "Three difficulties, honest single-solution puzzles.", icon: Grid3X3, group: "Brain training", scoreUnit: "pts" },
   { id: "chess", title: "Chess", tagline: "Play white against an engine with three strength levels.", icon: Crown, group: "Brain training", scoreUnit: "wins" },
   { id: "2048", title: "2048", tagline: "Slide, merge, and chase the big tile.", icon: Layers, group: "Brain training", scoreUnit: "pts" },
+  { id: "blockfall", title: "Blockfall", tagline: "Falling blocks with ghost piece, hold, kicks and mean levels.", icon: Boxes, group: "Brain training", scoreUnit: "pts" },
   { id: "memory", title: "Memory Match", tagline: "Sixteen cards, eight pairs, how few moves?", icon: Brain, group: "Quick fun", scoreUnit: "pts" },
   { id: "trivia", title: "Trivia", tagline: "Ten questions from the category you pick.", icon: HelpCircle, group: "Quick fun", scoreUnit: "/10" },
   { id: "reflex", title: "Reflex", tagline: "Tap on green. Average of five rounds counts.", icon: Zap, group: "Quick fun", scoreUnit: "ms" },
@@ -121,6 +124,7 @@ export function PlayClient() {
           {active === "trivia" && <TriviaGame />}
           {active === "reflex" && <ReflexGame />}
           {active === "brainrot" && <BrainrotGame />}
+          {active === "blockfall" && <BlockfallGame />}
           {active === "stats" && <StatsPanel />}
         </motion.div>
       </div>
