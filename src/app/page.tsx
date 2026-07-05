@@ -1,65 +1,92 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { navItems } from "@/components/shell/nav-items";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-export default function Home() {
+const sections = navItems.filter((item) => item.href !== "/");
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="space-y-10">
+      {/* Hero */}
+      <Reveal>
+        <section
+          className="relative overflow-hidden rounded-xl border border-line bg-surface p-8 shadow-card sm:p-12"
+          aria-labelledby="hero-title"
+        >
+          {/* Ambient gradient orbs */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full
+              bg-[radial-gradient(circle,var(--accent-soft),transparent_65%)] animate-float"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full
+              bg-[radial-gradient(circle,var(--accent-2-soft),transparent_65%)] animate-float
+              [animation-delay:-3.5s]"
+          />
+
+          <div className="relative max-w-2xl">
+            <Badge tone="accent" className="mb-4">
+              Your personal AI companion
+            </Badge>
+            <h1
+              id="hero-title"
+              className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              Work sharper.
+              <br />
+              <span className="gradient-text">Unwind better.</span>
+            </h1>
+            <p className="mt-4 text-base text-fg-muted sm:text-lg">
+              One place for the job hunt and the downtime after it: a CV that
+              beats the tracking systems, films worth your evening, puzzles for
+              your brain, and a daily read on where AI is heading.
+            </p>
+          </div>
+        </section>
+      </Reveal>
+
+      {/* Section cards */}
+      <section aria-label="App sections">
+        <RevealGroup className="grid gap-4 sm:grid-cols-2">
+          {sections.map((item) => {
+            const Icon = item.icon;
+            return (
+              <RevealItem key={item.href}>
+                <Link href={item.href} className="block rounded-lg outline-offset-4">
+                  <Card interactive className="group h-full">
+                    <CardContent className="flex items-start gap-4">
+                      <span
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg
+                          bg-accent-soft text-accent transition-transform duration-300
+                          group-hover:scale-110"
+                      >
+                        <Icon className="h-5.5 w-5.5" aria-hidden />
+                      </span>
+                      <div className="min-w-0">
+                        <h2 className="font-display font-semibold tracking-tight">
+                          {item.label}
+                        </h2>
+                        <p className="mt-1 text-sm text-fg-muted">{item.description}</p>
+                      </div>
+                      <ArrowRight
+                        className="ml-auto h-5 w-5 shrink-0 self-center text-fg-subtle
+                          transition-transform duration-300 group-hover:translate-x-1
+                          group-hover:text-accent"
+                        aria-hidden
+                      />
+                    </CardContent>
+                  </Card>
+                </Link>
+              </RevealItem>
+            );
+          })}
+        </RevealGroup>
+      </section>
     </div>
   );
 }

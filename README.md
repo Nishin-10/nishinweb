@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Companion — Career & Lifestyle AI
 
-## Getting Started
+One web app that covers the job hunt and the downtime after it:
 
-First, run the development server:
+- **Jobs & CV** — a short intake questionnaire, live job search (RemoteOK + Arbeitnow free feeds, Adzuna with a key, deep links into LinkedIn/Indeed/Glassdoor/ZipRecruiter, paste-a-posting fallback), CV upload (PDF/DOCX/TXT), Claude-powered CV tailoring in a strict human tone, an ATS scanner with score and fixes, a before/after diff, DOCX + PDF export, and cover letters.
+- **Discover** — book, movie and game recommendations (Open Library, TMDB, RAWG/FreeToGame) with mood/era/length/platform/language filters, multi-language movie mixing, and a thumbs up/down loop that re-ranks future picks.
+- **Brain & Fun** — Sudoku (unique-solution generator, 3 difficulties), chess against a minimax engine (3 strengths), 2048, Memory Match, live trivia (Open Trivia DB), a reflex tester, and a personal stats view.
+- **News** — daily AI/open-model, Hugging Face (trending models + Spaces), cloud and top-tech feed with topic filters, favorites, and human-tone AI summaries.
+- **Assistant** — a persistent multilingual agent dock on every page. It answers, triggers app actions (job search, recommendations, news brief, navigation), holds session context, and supports voice in/out via the browser's Web Speech API.
+
+## Stack
+
+Next.js 16 (App Router, Turbopack) · TypeScript · Tailwind CSS v4 · Framer Motion · Claude API (`@anthropic-ai/sdk`) · localStorage for single-user persistence. Dark/light themes via next-themes. No database needed.
+
+## Setup
 
 ```bash
+npm install
+copy .env.example .env.local   # then fill in keys
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required for AI features (CV tailoring, cover letters, assistant, news summaries):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `ANTHROPIC_API_KEY`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Optional (features degrade gracefully without them):
 
-## Learn More
+- `TMDB_API_KEY` — movie recommendations (free at themoviedb.org)
+- `RAWG_API_KEY` — full game catalog (free at rawg.io; falls back to FreeToGame)
+- `ADZUNA_APP_ID` / `ADZUNA_APP_KEY` — extra job feed (free at developer.adzuna.com)
 
-To learn more about Next.js, take a look at the following resources:
+## Machine-specific notes (this checkout)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js is a portable install at `%LOCALAPPDATA%\nodejs-portable\node-v24.18.0-win-x64`. Add it to PATH or invoke `node`/`npm` from there.
+- npm scripts run Node with `--use-system-ca` (via cross-env) so HTTPS works behind the corporate TLS-inspecting proxy.
+- `.next` is a directory junction to `%LOCALAPPDATA%\companion\next-cache` because OneDrive sync locks build output. `%LOCALAPPDATA%\companion\node_modules` is a junction back to the project's `node_modules` so module resolution keeps working from the relocated build dir. If you clone fresh outside OneDrive, delete the junction and let Next recreate `.next` normally.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Writing style guard
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Every LLM feature shares one system-prompt fragment, `HUMAN_TONE` in `src/lib/prompts.ts`, which bans AI-tell phrasing (em-dash tics, "Furthermore", buzzword stuffing, vague claims) and demands concrete, plainly worded output. Edit it there to tune the voice app-wide.
