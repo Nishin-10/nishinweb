@@ -127,6 +127,61 @@
   }
 }
 
+@keyframes aurora-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30% { transform: translate(50px, -35px) scale(1.18); }
+  65% { transform: translate(-40px, 28px) scale(0.92); }
+}
+
+@keyframes gradient-pan {
+  to { background-position: 200% center; }
+}
+
+@keyframes ring-pulse {
+  from { transform: scale(1); opacity: 0.55; }
+  to { transform: scale(1.6); opacity: 0; }
+}
+
+/* Soft drifting color fields for hero and lock screen backdrops */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  animation: aurora-drift 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Animated gradient headline text */
+.gradient-text-animated {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent));
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-pan 7s linear infinite;
+}
+
+/* Faint blueprint grid that fades toward the edges */
+.bg-grid-fade {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 75%);
+}
+
+/* Attention ring for the assistant launcher */
+.ring-beacon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  animation: ring-pulse 2.6s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  z-index: -1;
+}
+
 /* Base */
 html {
   scroll-behavior: smooth;

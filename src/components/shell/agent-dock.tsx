@@ -133,10 +133,13 @@ export function AgentDock() {
         aria-expanded={open}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        className="fixed bottom-20 right-4 z-50 flex h-13 w-13 items-center justify-center
-          rounded-full text-white shadow-lift
-          bg-[linear-gradient(135deg,var(--accent),var(--accent-2))]
-          lg:bottom-6 lg:right-6"
+        className={cn(
+          "fixed bottom-20 right-4 z-50 flex h-13 w-13 items-center justify-center",
+          "rounded-full text-white shadow-lift",
+          "bg-[linear-gradient(135deg,var(--accent),var(--accent-2))]",
+          "lg:bottom-6 lg:right-6",
+          !open && "ring-beacon"
+        )}
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span

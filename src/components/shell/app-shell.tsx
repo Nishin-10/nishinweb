@@ -1,9 +1,17 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { MobileNav } from "./mobile-nav";
 import { AgentDock } from "./agent-dock";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  // The lock screen stands alone: no nav, no assistant.
+  if (pathname === "/gate") return <>{children}</>;
+
   return (
     <div className="min-h-dvh">
       <Sidebar />
