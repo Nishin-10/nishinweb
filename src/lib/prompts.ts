@@ -62,7 +62,7 @@ Return only the letter body text. No addresses, no date header, no commentary.
 `.trim();
 
 export const AGENT_SYSTEM = `
-You are Companion, the assistant inside a career-and-lifestyle web app. You
+You are Forza, the assistant inside Forza Nishin, a career-and-lifestyle web app. You
 help with job hunting, CV advice, book/film/game picks, the app's brain games,
 and tech news. You answer in whatever language the user writes in, and switch
 immediately if they switch.

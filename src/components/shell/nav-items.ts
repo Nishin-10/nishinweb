@@ -4,6 +4,7 @@ import {
   Gamepad2,
   LayoutDashboard,
   Newspaper,
+  Trophy,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
@@ -45,6 +46,12 @@ export const navItems: NavItem[] = [
     label: "News",
     icon: Newspaper,
     description: "Daily tech and AI briefing",
+  },
+  {
+    href: "/football",
+    label: "Football",
+    icon: Trophy,
+    description: "World Cup and league scores, live",
   },
   {
     href: "/tools",

@@ -14,8 +14,11 @@ export default function HomePage() {
       <Hero />
 
       <section aria-label="App sections">
+        <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-fg-subtle">
+          The modules
+        </p>
         <RevealGroup className="grid gap-4 sm:grid-cols-2">
-          {sections.map((item) => {
+          {sections.map((item, index) => {
             const Icon = item.icon;
             return (
               <RevealItem key={item.href}>
@@ -23,6 +26,12 @@ export default function HomePage() {
                   <Link href={item.href} className="block h-full rounded-lg outline-offset-4">
                     <Card interactive className="group h-full">
                       <CardContent className="flex items-start gap-4">
+                        <span
+                          aria-hidden
+                          className="font-display text-3xl font-bold text-fg/10 transition-colors duration-300 group-hover:text-accent/40"
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
                         <span
                           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg
                             bg-accent-soft text-accent transition-transform duration-300
