@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { KeyRound, Loader2, Lock, Unlock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { celebrate } from "@/lib/confetti";
 
 function GateForm() {
   const router = useRouter();
@@ -27,6 +28,7 @@ function GateForm() {
       });
       if (!res.ok) throw new Error();
       setUnlocked(true);
+      celebrate("win");
       setTimeout(() => router.replace(params.get("from") ?? "/"), 650);
     } catch {
       setError(true);

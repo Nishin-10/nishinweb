@@ -13,8 +13,13 @@ export function Hero() {
 
   return (
     <section
-      className="relative overflow-hidden rounded-xl border border-line bg-surface p-8 shadow-card sm:p-12"
+      className="group/hero relative overflow-hidden rounded-xl border border-line bg-surface p-8 shadow-card sm:p-12"
       aria-labelledby="hero-title"
+      onPointerMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+        e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
+      }}
     >
       {/* Layered aurora + blueprint grid backdrop */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -22,6 +27,14 @@ export function Hero() {
         <div className="aurora-blob -bottom-32 -left-20 h-96 w-96 bg-[radial-gradient(circle,var(--accent-2-soft),transparent_60%)] [animation-delay:-6s]" />
         <div className="aurora-blob right-[30%] top-[55%] h-64 w-64 bg-[radial-gradient(circle,var(--accent-soft),transparent_65%)] [animation-delay:-12s]" />
         <div className="bg-grid-fade absolute inset-0" />
+        {/* Cursor-following spotlight */}
+        <div
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/hero:opacity-100"
+          style={{
+            background:
+              "radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%)",
+          }}
+        />
       </div>
 
       <div className="relative max-w-2xl">

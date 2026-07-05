@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { gameStats } from "@/lib/games/stats";
+import { celebrate } from "@/lib/confetti";
 
 const EMOJI = ["🚀", "🎧", "🌵", "🐙", "🍜", "🎲", "🛰️", "🦕", "🍉", "🎯", "🧊", "🌋"];
 
@@ -46,6 +47,7 @@ export function MemoryGame() {
         );
         if (next.every((c) => c.matched)) {
           setWon(true);
+          celebrate("win");
           const score = Math.max(500 - (moves + 1) * 10, 50);
           gameStats.record("memory", score, `${moves + 1} moves`);
         }

@@ -176,7 +176,7 @@ function BooksPanel() {
             ))}
           </FilterRow>
           <FilterRow label="Language">
-            {LANGUAGES.slice(0, 7).map((l) => (
+            {LANGUAGES.map((l) => (
               <Pill key={l.book} active={language === l.book} onClick={() => setLanguage(l.book)}>
                 {l.label}
               </Pill>

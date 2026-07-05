@@ -25,6 +25,8 @@ const LANGS = [
   { code: "fr-FR", label: "Français" },
   { code: "ar-SA", label: "العربية" },
   { code: "hi-IN", label: "हिन्दी" },
+  { code: "ml-IN", label: "മലയാളം" },
+  { code: "ta-IN", label: "தமிழ்" },
 ];
 
 const GREETING: ChatMessage = {

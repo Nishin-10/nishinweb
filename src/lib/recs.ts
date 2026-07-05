@@ -89,6 +89,8 @@ export const LANGUAGES = [
   { label: "French", book: "fre", movie: "fr" },
   { label: "Arabic", book: "ara", movie: "ar" },
   { label: "Hindi", book: "hin", movie: "hi" },
+  { label: "Malayalam", book: "mal", movie: "ml" },
+  { label: "Tamil", book: "tam", movie: "ta" },
   { label: "Korean", book: "kor", movie: "ko" },
   { label: "Japanese", book: "jpn", movie: "ja" },
   { label: "German", book: "ger", movie: "de" },

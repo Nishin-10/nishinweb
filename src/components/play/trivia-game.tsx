@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { gameStats } from "@/lib/games/stats";
+import { celebrate } from "@/lib/confetti";
 
 interface Question {
   question: string;
@@ -78,6 +79,7 @@ export function TriviaGame() {
       if (index + 1 >= questions.length) {
         const final = score + (right ? 1 : 0);
         setDone(true);
+        if (final >= 7) celebrate(final === 10 ? "big" : "win");
         gameStats.record("trivia", final, `${final}/10 correct`);
       } else {
         setIndex((i) => i + 1);

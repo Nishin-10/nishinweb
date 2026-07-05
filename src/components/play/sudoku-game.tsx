@@ -13,6 +13,7 @@ import {
   type Grid,
 } from "@/lib/games/sudoku";
 import { gameStats } from "@/lib/games/stats";
+import { celebrate } from "@/lib/confetti";
 
 function formatTime(seconds: number) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
@@ -62,6 +63,7 @@ export function SudokuGame() {
       }
       if (value !== 0 && isComplete(next, solution)) {
         setWon(true);
+        celebrate("win");
         const score = Math.max(1000 - seconds - errors * 30, 50);
         gameStats.record(
           "sudoku",

@@ -7,6 +7,7 @@ import {
   BarChart3,
   Brain,
   Crown,
+  Flame,
   Grid3X3,
   HelpCircle,
   Layers,
@@ -23,8 +24,9 @@ import { Game2048 } from "./game-2048";
 import { MemoryGame } from "./memory-game";
 import { TriviaGame } from "./trivia-game";
 import { ReflexGame } from "./reflex-game";
+import { BrainrotGame } from "./brainrot-game";
 
-type GameId = "sudoku" | "chess" | "2048" | "memory" | "trivia" | "reflex";
+type GameId = "sudoku" | "chess" | "2048" | "memory" | "trivia" | "reflex" | "brainrot";
 
 const GAMES: {
   id: GameId;
@@ -40,6 +42,7 @@ const GAMES: {
   { id: "memory", title: "Memory Match", tagline: "Sixteen cards, eight pairs, how few moves?", icon: Brain, group: "Quick fun", scoreUnit: "pts" },
   { id: "trivia", title: "Trivia", tagline: "Ten questions from the category you pick.", icon: HelpCircle, group: "Quick fun", scoreUnit: "/10" },
   { id: "reflex", title: "Reflex", tagline: "Tap on green. Average of five rounds counts.", icon: Zap, group: "Quick fun", scoreUnit: "ms" },
+  { id: "brainrot", title: "Brain Rot Blitz", tagline: "Sort the feed: rot or brain food. 45 seconds, leaderboard glory.", icon: Flame, group: "Quick fun", scoreUnit: "pts" },
 ];
 
 function StatsPanel() {
@@ -117,6 +120,7 @@ export function PlayClient() {
           {active === "memory" && <MemoryGame />}
           {active === "trivia" && <TriviaGame />}
           {active === "reflex" && <ReflexGame />}
+          {active === "brainrot" && <BrainrotGame />}
           {active === "stats" && <StatsPanel />}
         </motion.div>
       </div>

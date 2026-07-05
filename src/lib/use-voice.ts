@@ -75,6 +75,8 @@ export function useSpeechInput(lang: string) {
 export function guessLang(text: string, fallback: string): string {
   if (/[؀-ۿ]/.test(text)) return "ar-SA";
   if (/[ऀ-ॿ]/.test(text)) return "hi-IN";
+  if (/[ഀ-ൿ]/.test(text)) return "ml-IN";
+  if (/[஀-௿]/.test(text)) return "ta-IN";
   if (/[¿¡ñ]|(\b(el|la|los|las|una?|que|para|con)\b.*){2,}/i.test(text)) return "es-ES";
   if (/[àâçéèêëîïôùûü]|(\b(le|la|les|des|une?|est|avec|pour)\b.*){2,}/i.test(text)) return "fr-FR";
   return fallback;

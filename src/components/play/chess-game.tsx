@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { gameStats } from "@/lib/games/stats";
+import { celebrate } from "@/lib/confetti";
 
 const PIECE_GLYPHS: Record<string, string> = {
   wk: "♔", wq: "♕", wr: "♖", wb: "♗", wn: "♘", wp: "♙",
@@ -88,6 +89,7 @@ export function ChessGame() {
       const text =
         result === "win" ? "You won. Checkmate." : result === "loss" ? "Checkmate. The engine wins." : "Draw.";
       setStatus(text);
+      if (result === "win") celebrate("big");
       gameStats.record(
         "chess",
         result === "win" ? 1 : 0,
