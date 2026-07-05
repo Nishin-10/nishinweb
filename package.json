@@ -2,10 +2,14 @@
   "name": "career-lifestyle-companion",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--use-system-ca next dev",
-    "build": "cross-env NODE_OPTIONS=--use-system-ca next build",
-    "start": "cross-env NODE_OPTIONS=--use-system-ca next start",
+    "build": "next build",
+    "start": "next start",
+    "start:local": "cross-env NODE_OPTIONS=--use-system-ca next start",
     "lint": "eslint"
   },
   "dependencies": {

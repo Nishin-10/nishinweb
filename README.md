@@ -33,7 +33,7 @@ Optional (features degrade gracefully without them):
 ## Machine-specific notes (this checkout)
 
 - Node.js is a portable install at `%LOCALAPPDATA%\nodejs-portable\node-v24.18.0-win-x64`. Add it to PATH or invoke `node`/`npm` from there.
-- npm scripts run Node with `--use-system-ca` (via cross-env) so HTTPS works behind the corporate TLS-inspecting proxy.
+- On the corporate network, use `npm run dev` or `npm run start:local` — those pass Node `--use-system-ca` so HTTPS works behind the TLS-inspecting proxy. Plain `build`/`start` stay flag-free so cloud hosts (Vercel etc.) can run them.
 - `.next` is a directory junction to `%LOCALAPPDATA%\companion\next-cache` because OneDrive sync locks build output. `%LOCALAPPDATA%\companion\node_modules` is a junction back to the project's `node_modules` so module resolution keeps working from the relocated build dir. If you clone fresh outside OneDrive, delete the junction and let Next recreate `.next` normally.
 
 ## Writing style guard
