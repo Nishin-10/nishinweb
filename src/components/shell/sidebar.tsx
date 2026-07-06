@@ -60,9 +60,24 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="flex items-center justify-between border-t border-line px-5 py-4">
-        <p className="text-xs text-fg-subtle">Theme</p>
-        <ThemeToggle />
+      <div className="space-y-2 border-t border-line px-5 py-4">
+        <button
+          type="button"
+          onClick={() =>
+            window.dispatchEvent(
+              new KeyboardEvent("keydown", { key: "k", ctrlKey: true })
+            )
+          }
+          className="flex w-full items-center justify-between rounded-md border border-line px-3 py-1.5
+            text-xs text-fg-subtle transition-colors hover:border-line-strong hover:text-fg"
+        >
+          Jump anywhere
+          <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+        </button>
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-fg-subtle">Theme</p>
+          <ThemeToggle />
+        </div>
       </div>
     </aside>
   );

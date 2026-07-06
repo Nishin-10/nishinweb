@@ -165,6 +165,34 @@ export function FootballClient() {
         </Card>
       )}
 
+      {/* Broadcast ticker: today's results loop across the top */}
+      {matches && matches.length > 1 && (
+        <div
+          aria-hidden
+          className="relative -mx-4 overflow-hidden border-y border-line bg-surface-2/60 py-1.5 sm:-mx-6 lg:-mx-10"
+          style={{
+            maskImage: "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
+            WebkitMaskImage: "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
+          }}
+        >
+          <div className="ticker-track flex w-max gap-8 whitespace-nowrap font-mono text-xs text-fg-muted">
+            {[...matches, ...matches].map((m, i) => (
+              <span key={`${m.id}-${i}`} className="flex items-center gap-2">
+                <span className={cn(m.home.winner && "font-bold text-fg")}>{m.home.abbrev}</span>
+                <span className={cn("font-bold", m.status === "in" ? "text-accent" : "text-fg")}>
+                  {m.home.score || "–"}:{m.away.score || "–"}
+                </span>
+                <span className={cn(m.away.winner && "font-bold text-fg")}>{m.away.abbrev}</span>
+                <span className="text-fg-subtle">
+                  {m.status === "in" ? "● LIVE" : m.statusText}
+                </span>
+                <span className="text-line-strong">|</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* League pills */}
       <div className="flex flex-wrap gap-2">
         {LEAGUES.map((l) => (

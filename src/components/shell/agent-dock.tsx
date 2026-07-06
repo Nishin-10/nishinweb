@@ -146,8 +146,16 @@ export function AgentDock() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close assistant" : "Open assistant"}
         aria-expanded={open}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onPointerMove={(e) => {
+          // Magnetic lean toward the cursor
+          const r = e.currentTarget.getBoundingClientRect();
+          e.currentTarget.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.25}px, ${(e.clientY - r.top - r.height / 2) * 0.25}px)`;
+        }}
+        onPointerLeave={(e) => {
+          e.currentTarget.style.transform = "";
+        }}
         className={cn(
           "fixed bottom-20 right-4 z-50 flex h-13 w-13 items-center justify-center",
           "rounded-full text-white shadow-lift",

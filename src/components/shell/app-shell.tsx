@@ -6,6 +6,7 @@ import { Topbar } from "./topbar";
 import { MobileNav } from "./mobile-nav";
 import { AgentDock } from "./agent-dock";
 import { CommandPalette } from "./command-palette";
+import { AmbientLayer } from "@/components/motion/ambient-layer";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -25,6 +26,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <MobileNav />
       <AgentDock />
       <CommandPalette />
+      <AmbientLayer />
     </div>
   );
 }
