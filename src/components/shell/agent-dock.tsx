@@ -57,18 +57,6 @@ export function AgentDock() {
   const sttLang = lang === "auto" ? (typeof navigator !== "undefined" ? navigator.language : "en-US") : lang;
   const { supported: micSupported, listening, start, stop } = useSpeechInput(sttLang);
 
-  // Command palette hands off "ask the assistant" queries
-  useEffect(() => {
-    const onAsk = (e: Event) => {
-      const q = (e as CustomEvent<string>).detail;
-      setOpen(true);
-      if (q?.trim()) setTimeout(() => void send(q), 250);
-    };
-    window.addEventListener("companion:ask", onAsk);
-    return () => window.removeEventListener("companion:ask", onAsk);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Session persistence
   useEffect(() => {
     try {
@@ -127,6 +115,18 @@ export function AgentDock() {
       setBusy(false);
     }
   };
+
+  // Command palette hands off "ask the assistant" queries
+  useEffect(() => {
+    const onAsk = (e: Event) => {
+      const q = (e as CustomEvent<string>).detail;
+      setOpen(true);
+      if (q?.trim()) setTimeout(() => void send(q), 250);
+    };
+    window.addEventListener("companion:ask", onAsk);
+    return () => window.removeEventListener("companion:ask", onAsk);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleMic = () => {
     if (listening) {
