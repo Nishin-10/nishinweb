@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { AGENT_SYSTEM } from "@/lib/prompts";
+import { complete } from "@/lib/llm";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -148,17 +149,29 @@ async function runTool(
 }
 
 export async function POST(request: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json(
-      { error: "No ANTHROPIC_API_KEY set. Add it to .env.local and restart." },
-      { status: 503 }
-    );
-  }
-
   const body = (await request.json()) as { messages?: ChatMessage[] };
   const history = (body.messages ?? []).slice(-16);
   if (history.length === 0) {
     return NextResponse.json({ error: "Empty conversation." }, { status: 400 });
+  }
+
+  // Without a Claude key the tool-use loop is unavailable; fall back to a
+  // plain Groq conversation so the assistant still talks.
+  if (!process.env.ANTHROPIC_API_KEY) {
+    try {
+      const reply = await complete({
+        tier: "fast",
+        system: AGENT_SYSTEM,
+        maxTokens: 800,
+        user: history.map((m) => `${m.role}: ${m.content}`).join("\n"),
+      });
+      return NextResponse.json({ reply });
+    } catch (err) {
+      return NextResponse.json(
+        { error: err instanceof Error ? err.message : "Assistant unavailable." },
+        { status: 503 }
+      );
+    }
   }
 
   const origin = new URL(request.url).origin;
