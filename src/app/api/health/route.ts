@@ -16,6 +16,7 @@ export async function GET() {
     capabilities: {
       ai_quality: providers.claude,
       ai_fast: providers.groq,
+      ai_gemini: providers.gemini,
       multiplayer_store: usingRedis(),
       gate: Boolean(process.env.ACCESS_PASSPHRASE),
     },

@@ -9,9 +9,10 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const CLAUDE_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
 const GROQ_MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-120b";
+const GEMINI_MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
 
 export type Tier = "quality" | "fast";
-export type Provider = "claude" | "groq";
+export type Provider = "claude" | "groq" | "gemini";
 
 interface CompleteArgs {
   system: string;
@@ -23,7 +24,37 @@ interface CompleteArgs {
 }
 
 export function parseProvider(value: unknown): Provider | undefined {
-  return value === "claude" || value === "groq" ? value : undefined;
+  return value === "claude" || value === "groq" || value === "gemini"
+    ? value
+    : undefined;
+}
+
+async function viaGemini(args: CompleteArgs): Promise<string> {
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: args.system }] },
+        contents: [{ role: "user", parts: [{ text: args.user }] }],
+        generationConfig: { maxOutputTokens: args.maxTokens },
+      }),
+    }
+  );
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Gemini error ${res.status}: ${detail.slice(0, 200)}`);
+  }
+  const json = (await res.json()) as {
+    candidates?: { content?: { parts?: { text?: string }[] } }[];
+  };
+  const text = json.candidates?.[0]?.content?.parts
+    ?.map((p) => p.text ?? "")
+    .join("")
+    .trim();
+  if (!text) throw new Error("Gemini returned an empty completion.");
+  return text;
 }
 
 async function viaClaude(args: CompleteArgs): Promise<string> {
@@ -73,27 +104,36 @@ export function providersAvailable() {
   return {
     claude: Boolean(process.env.ANTHROPIC_API_KEY),
     groq: Boolean(process.env.GROQ_API_KEY),
+    gemini: Boolean(process.env.GEMINI_API_KEY),
   };
 }
 
+const CALLERS: Record<Provider, (args: CompleteArgs) => Promise<string>> = {
+  claude: viaClaude,
+  groq: viaGroq,
+  gemini: viaGemini,
+};
+
 export async function complete(args: CompleteArgs): Promise<string> {
-  const { claude, groq } = providersAvailable();
-  if (!claude && !groq) {
+  const available = providersAvailable();
+  if (!available.claude && !available.groq && !available.gemini) {
     throw new Error(
-      "No AI provider configured. Add ANTHROPIC_API_KEY and/or GROQ_API_KEY to .env.local (and Vercel) and restart."
+      "No AI provider configured. Add ANTHROPIC_API_KEY, GROQ_API_KEY or GEMINI_API_KEY to .env.local (and Vercel) and restart."
     );
   }
 
-  const preferGroq = args.provider ? args.provider === "groq" : args.tier === "fast";
-  const order = preferGroq
-    ? ([groq && "groq", claude && "claude"] as const)
-    : ([claude && "claude", groq && "groq"] as const);
+  // Explicit choice first; otherwise fast tier prefers Groq, quality Claude.
+  const preferred: Provider =
+    args.provider ?? (args.tier === "fast" ? "groq" : "claude");
+  const order = [
+    preferred,
+    ...(["claude", "groq", "gemini"] as Provider[]).filter((p) => p !== preferred),
+  ].filter((p) => available[p]);
 
   let lastError: unknown;
   for (const provider of order) {
-    if (!provider) continue;
     try {
-      return provider === "claude" ? await viaClaude(args) : await viaGroq(args);
+      return await CALLERS[provider](args);
     } catch (err) {
       lastError = err;
       console.error(`${provider} completion failed, trying fallback:`, err);

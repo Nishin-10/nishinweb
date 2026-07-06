@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-export type ModelChoice = "claude" | "groq";
+export type ModelChoice = "claude" | "groq" | "gemini";
 
 const KEY = "companion:model-pref";
 
@@ -11,12 +11,13 @@ const KEY = "companion:model-pref";
 export function getModelPref(): ModelChoice {
   if (typeof window === "undefined") return "claude";
   const v = window.localStorage.getItem(KEY);
-  return v === "groq" ? "groq" : "claude";
+  return v === "groq" || v === "gemini" ? v : "claude";
 }
 
 const OPTIONS: { value: ModelChoice; label: string; hint: string }[] = [
   { value: "claude", label: "Claude", hint: "paid · best writing" },
   { value: "groq", label: "Groq", hint: "free · fastest" },
+  { value: "gemini", label: "Gemini", hint: "free · balanced" },
 ];
 
 export function ModelPicker({ className }: { className?: string }) {

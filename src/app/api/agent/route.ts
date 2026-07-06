@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { AGENT_SYSTEM } from "@/lib/prompts";
-import { complete } from "@/lib/llm";
+import { complete, parseProvider } from "@/lib/llm";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -157,10 +157,11 @@ export async function POST(request: Request) {
 
   // Groq path: user's explicit choice, or fallback when the Claude key is
   // missing. Plain conversation — app actions need Claude's tool loop.
-  if (body.provider === "groq" || !process.env.ANTHROPIC_API_KEY) {
+  if (body.provider === "groq" || body.provider === "gemini" || !process.env.ANTHROPIC_API_KEY) {
     try {
       const reply = await complete({
         tier: "fast",
+        provider: parseProvider(body.provider),
         system: AGENT_SYSTEM,
         maxTokens: 800,
         user: history.map((m) => `${m.role}: ${m.content}`).join("\n"),
