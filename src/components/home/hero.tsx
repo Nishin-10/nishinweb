@@ -1,7 +1,11 @@
 "use client";
 
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
-import { ArrowDown, Sparkles } from "lucide-react";
+import {
+  ArrowDown, Briefcase, Compass, Gamepad2, Newspaper, Trophy, Wrench,
+} from "lucide-react";
+
+const ORBIT_ICONS = [Briefcase, Compass, Gamepad2, Trophy, Newspaper, Wrench];
 
 const META = [
   { label: "Modules", value: "6" },
@@ -52,12 +56,36 @@ export function Hero() {
             bg-[radial-gradient(circle_at_35%_30%,color-mix(in_oklab,var(--accent)_28%,var(--surface)),color-mix(in_oklab,var(--accent-2)_18%,var(--surface))_55%,var(--surface)_100%)]
             shadow-[0_0_120px_-20px_var(--accent)] lg:h-[26rem] lg:w-[26rem]"
         >
-          <motion.span
+          {/* Orbiting module icons: the whole app circling its core */}
+          <motion.div
             animate={reduce ? {} : { rotate: 360 }}
-            transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-6 rounded-full border border-dashed border-[color-mix(in_oklab,var(--accent)_35%,transparent)]"
+            transition={{ duration: 46, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-8"
+          >
+            {ORBIT_ICONS.map((Icon, i) => {
+              const angle = (i / ORBIT_ICONS.length) * 2 * Math.PI;
+              return (
+                <motion.span
+                  key={i}
+                  className="absolute flex h-11 w-11 items-center justify-center rounded-full
+                    border border-line bg-surface/90 text-accent shadow-card"
+                  style={{
+                    left: `calc(50% + ${Math.cos(angle) * 50}% - 22px)`,
+                    top: `calc(50% + ${Math.sin(angle) * 50}% - 22px)`,
+                  }}
+                  animate={reduce ? {} : { rotate: -360 }}
+                  transition={{ duration: 46, repeat: Infinity, ease: "linear" }}
+                >
+                  <Icon className="h-5 w-5" strokeWidth={1.6} />
+                </motion.span>
+              );
+            })}
+          </motion.div>
+          <motion.span
+            animate={reduce ? {} : { scale: [1, 1.18, 1], opacity: [0.75, 1, 0.75] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            className="h-20 w-20 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-2),var(--accent))] shadow-[var(--glow-accent)]"
           />
-          <Sparkles className="h-16 w-16 text-accent opacity-80" strokeWidth={1.2} />
         </motion.div>
       </motion.div>
 

@@ -10,6 +10,7 @@ export default function NewsPage() {
       <PageHeader
         title="News"
         description="A daily briefing on AI, open models, Hugging Face and the big clouds."
+        emojis={["📰", "🤖", "☁️", "⚡", "🛰️", "🔬"]}
       />
       <NewsClient />
     </div>

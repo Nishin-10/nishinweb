@@ -120,16 +120,46 @@ export function FootballClient() {
       {league === "worldcup" && (
         <Card className="overflow-hidden border-accent/40">
           <CardContent className="relative flex items-center gap-4 bg-[linear-gradient(120deg,var(--accent-soft),var(--accent-2-soft))]">
-            <Trophy className="h-10 w-10 shrink-0 text-warning" aria-hidden />
-            <div>
-              <h2 className="font-display text-lg font-bold">World Cup 2026 edition</h2>
+            {/* Mini celebrating characters drifting across the banner */}
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+              {["🏆", "⚽", "🎉", "🧑‍🤝‍🧑", "🥁", "🌍", "🎺", "🚩"].map((e, i) => (
+                <motion.span
+                  key={i}
+                  className="absolute text-lg opacity-25"
+                  style={{ left: `${(i * 13 + 4) % 94}%`, top: `${(i * 37 + 10) % 70}%` }}
+                  animate={{ y: [0, -8, 0], rotate: [0, i % 2 ? 14 : -14, 0] }}
+                  transition={{ duration: 4 + (i % 3), delay: -i, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {e}
+                </motion.span>
+              ))}
+            </div>
+            <motion.div
+              animate={{ rotate: [0, -8, 8, 0] }}
+              transition={{ duration: 2.6, repeat: Infinity, repeatDelay: 1.4 }}
+              className="relative shrink-0"
+            >
+              <Trophy className="h-11 w-11 text-warning drop-shadow-[0_0_12px_rgba(240,179,92,0.5)]" aria-hidden />
+            </motion.div>
+            <div className="relative">
+              <h2 className="flex items-center gap-2 font-display text-lg font-bold">
+                World Cup 2026 edition
+                <motion.span
+                  aria-hidden
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{ duration: 0.7, repeat: Infinity, ease: "easeOut" }}
+                  className="inline-block text-base"
+                >
+                  ⚽
+                </motion.span>
+              </h2>
               <p className="text-sm text-fg-muted">
                 {season ?? "FIFA World Cup"} · live scores refresh every minute
                 {live.length > 0 && ` · ${live.length} match${live.length > 1 ? "es" : ""} live now`}
               </p>
             </div>
             {live.length > 0 && (
-              <Badge tone="danger" className="ml-auto animate-pulse-soft">● LIVE</Badge>
+              <Badge tone="danger" className="relative ml-auto animate-pulse-soft">● LIVE</Badge>
             )}
           </CardContent>
         </Card>

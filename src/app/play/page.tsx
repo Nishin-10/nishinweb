@@ -10,6 +10,7 @@ export default function PlayPage() {
       <PageHeader
         title="Brain & Fun"
         description="Sudoku, chess, 2048 and quick arcade breaks, with your stats tracked."
+        emojis={["🎮", "♟️", "🧩", "🎲", "👾", "🕹️", "🧠", "🃏"]}
       />
       <PlayClient />
     </div>

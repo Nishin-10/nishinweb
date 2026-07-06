@@ -10,6 +10,7 @@ export default function DiscoverPage() {
       <PageHeader
         title="Discover"
         description="Books, films and games picked for your mood, language and taste. Thumbs teach it what you like."
+        emojis={["🎬", "📚", "🍿", "🎧", "✨", "🎭", "📖"]}
       />
       <DiscoverClient />
     </div>

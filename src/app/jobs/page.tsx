@@ -10,6 +10,7 @@ export default function JobsPage() {
       <PageHeader
         title="Jobs & CV"
         description="Tell Companion what you're after, then let it find postings and tune your CV for each one."
+        emojis={["💼", "🚀", "📈", "🎯", "✍️"]}
       />
       <JobsClient />
     </div>

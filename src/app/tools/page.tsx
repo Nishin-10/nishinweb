@@ -10,6 +10,7 @@ export default function ToolsPage() {
       <PageHeader
         title="Tools"
         description="Summarize any document, or have one drafted for you. Export as DOCX or PDF."
+        emojis={["📝", "📄", "✂️", "🖋️", "📎"]}
       />
       <ToolsClient />
     </div>

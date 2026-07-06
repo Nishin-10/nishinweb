@@ -10,6 +10,7 @@ export default function FootballPage() {
       <PageHeader
         title="Football"
         description="World Cup 2026 front and center, every big league a tap away. Scores refresh live."
+        emojis={["⚽", "🏆", "🥅", "🧤", "🎉", "🥇", "📣", "🌍"]}
       />
       <FootballClient />
     </div>
