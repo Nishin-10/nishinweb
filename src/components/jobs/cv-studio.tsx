@@ -20,6 +20,7 @@ import { careerStore, type JobPosting } from "@/lib/career";
 import { scanCv, type AtsReport } from "@/lib/ats";
 import { downloadDocx, downloadPdf } from "@/lib/export";
 import { DiffView } from "./diff-view";
+import { getModelPref, ModelPicker } from "@/components/ui/model-picker";
 
 type ResultTab = "diff" | "tailored" | "ats" | "letter";
 
@@ -162,6 +163,7 @@ export function CvStudio({
           jobTitle: job.title,
           company: job.company,
           mode: "cv",
+          provider: getModelPref(),
         }),
       });
       const data = (await res.json()) as { result?: string; error?: string };
@@ -197,6 +199,7 @@ export function CvStudio({
           jobTitle: job.title,
           company: job.company,
           mode: "cover-letter",
+          provider: getModelPref(),
         }),
       });
       const data = (await res.json()) as { result?: string; error?: string };
@@ -303,6 +306,7 @@ export function CvStudio({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
+          <ModelPicker className="max-w-xs" />
           <div className="flex flex-wrap items-center gap-3">
             <Button onClick={runTailor} disabled={!cvText || !job || tailoring}>
               {tailoring ? (

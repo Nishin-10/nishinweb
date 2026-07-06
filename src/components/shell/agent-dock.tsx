@@ -12,6 +12,7 @@ import {
   stopSpeaking,
   useSpeechInput,
 } from "@/lib/use-voice";
+import { getModelPref, ModelPicker } from "@/components/ui/model-picker";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -90,7 +91,7 @@ export function AgentDock() {
       const res = await fetch("/api/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.slice(-16) }),
+        body: JSON.stringify({ messages: next.slice(-16), provider: getModelPref() }),
       });
       const data = (await res.json()) as {
         reply?: string;
@@ -207,6 +208,13 @@ export function AgentDock() {
               >
                 {voiceOut ? <Volume2 className="h-4 w-4 text-accent" /> : <VolumeX className="h-4 w-4" />}
               </Button>
+            </div>
+
+            <div className="border-b border-line px-3.5 py-2">
+              <ModelPicker />
+              <p className="mt-1 text-[10px] text-fg-subtle">
+                Groq chats; Claude also runs app actions (search, recommend, navigate).
+              </p>
             </div>
 
             {/* Messages */}

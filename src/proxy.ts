@@ -32,6 +32,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Everything except the gate itself, Next internals, and static files.
-    "/((?!gate|api/gate|_next/static|_next/image|favicon.ico|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!gate|api/gate|api/health|_next/static|_next/image|favicon.ico|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

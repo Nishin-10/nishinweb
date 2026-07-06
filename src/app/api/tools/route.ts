@@ -1,16 +1,19 @@
 import { NextResponse } from "next/server";
-import { complete } from "@/lib/llm";
+import { complete, parseProvider } from "@/lib/llm";
 import { DOC_WRITER_SYSTEM, SUMMARIZER_SYSTEM } from "@/lib/prompts";
 
 export const runtime = "nodejs";
 export const maxDuration = 90;
 
 export async function POST(request: Request) {
-  const { mode, text, instructions } = (await request.json()) as {
+  const body = (await request.json()) as {
     mode?: "summarize" | "write";
     text?: string;
     instructions?: string;
+    provider?: string;
   };
+  const { mode, text, instructions } = body;
+  const provider = parseProvider(body.provider);
 
   if (mode === "summarize" && (!text || text.trim().length < 40)) {
     return NextResponse.json(
@@ -32,13 +35,15 @@ export async function POST(request: Request) {
     const result = await complete(
       mode === "summarize"
         ? {
-            tier: "fast", // summaries: speed wins, Groq first
+            tier: "fast" as const, // summaries: speed wins, Groq first
+            provider,
             system: SUMMARIZER_SYSTEM,
             maxTokens: 1200,
             user: `Summarize this document:\n\n${text!.slice(0, 60000)}`,
           }
         : {
-            tier: "quality", // drafting: writing quality wins, Claude first
+            tier: "quality" as const, // drafting: writing quality wins, Claude first
+            provider,
             system: DOC_WRITER_SYSTEM,
             maxTokens: 2500,
             user: `Write this document:\n\n${instructions}${text?.trim() ? `\n\nReference material to draw from:\n${text.slice(0, 30000)}` : ""}`,

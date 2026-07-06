@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getModelPref, ModelPicker } from "@/components/ui/model-picker";
 
 type NewsTopic = "ai" | "huggingface" | "cloud" | "tech";
 
@@ -85,6 +86,7 @@ function ArticleCard({
           title: article.title,
           excerpt: article.excerpt,
           url: article.url,
+          provider: getModelPref(),
         }),
       });
       const data = (await res.json()) as { summary?: string; error?: string };
@@ -228,9 +230,12 @@ export function NewsClient() {
             {t.key === "saved" && favs.length > 0 && ` (${favs.length})`}
           </button>
         ))}
-        <Button variant="ghost" size="sm" onClick={load} disabled={loading} className="ml-auto">
-          <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} /> Refresh
-        </Button>
+        <div className="ml-auto flex items-center gap-2">
+          <ModelPicker className="w-48" />
+          <Button variant="ghost" size="sm" onClick={load} disabled={loading}>
+            <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} /> Refresh
+          </Button>
+        </div>
       </div>
 
       {loading && (

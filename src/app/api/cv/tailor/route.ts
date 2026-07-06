@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { complete } from "@/lib/llm";
+import { complete, parseProvider } from "@/lib/llm";
 import { CV_TAILOR_SYSTEM, COVER_LETTER_SYSTEM } from "@/lib/prompts";
 
 export const runtime = "nodejs";
@@ -12,9 +12,11 @@ export async function POST(request: Request) {
     jobTitle?: string;
     company?: string;
     mode?: "cv" | "cover-letter";
+    provider?: string;
   };
 
   const { cvText, jobText, jobTitle, company, mode = "cv" } = body;
+  const provider = parseProvider(body.provider);
   if (!cvText || !jobText) {
     return NextResponse.json(
       { error: "Both the CV text and the job description are required." },
@@ -27,12 +29,14 @@ export async function POST(request: Request) {
       mode === "cover-letter"
         ? await complete({
             tier: "quality",
+            provider,
             system: COVER_LETTER_SYSTEM,
             maxTokens: 1200,
             user: `Job: ${jobTitle ?? "see posting"} at ${company ?? "the company"}\n\nJob posting:\n${jobText.slice(0, 12000)}\n\nCandidate CV:\n${cvText.slice(0, 12000)}`,
           })
         : await complete({
             tier: "quality",
+            provider,
             system: CV_TAILOR_SYSTEM,
             maxTokens: 4000,
             user: `Tailor this CV for the following job.\n\nJob: ${jobTitle ?? ""} ${company ? `at ${company}` : ""}\n\nJob posting:\n${jobText.slice(0, 12000)}\n\nCurrent CV:\n${cvText.slice(0, 16000)}`,

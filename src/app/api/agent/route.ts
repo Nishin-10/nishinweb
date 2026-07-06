@@ -149,15 +149,15 @@ async function runTool(
 }
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as { messages?: ChatMessage[] };
+  const body = (await request.json()) as { messages?: ChatMessage[]; provider?: string };
   const history = (body.messages ?? []).slice(-16);
   if (history.length === 0) {
     return NextResponse.json({ error: "Empty conversation." }, { status: 400 });
   }
 
-  // Without a Claude key the tool-use loop is unavailable; fall back to a
-  // plain Groq conversation so the assistant still talks.
-  if (!process.env.ANTHROPIC_API_KEY) {
+  // Groq path: user's explicit choice, or fallback when the Claude key is
+  // missing. Plain conversation — app actions need Claude's tool loop.
+  if (body.provider === "groq" || !process.env.ANTHROPIC_API_KEY) {
     try {
       const reply = await complete({
         tier: "fast",

@@ -8,15 +8,22 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 const CLAUDE_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
-const GROQ_MODEL = process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile";
+const GROQ_MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-120b";
 
 export type Tier = "quality" | "fast";
+export type Provider = "claude" | "groq";
 
 interface CompleteArgs {
   system: string;
   user: string;
   maxTokens: number;
   tier: Tier;
+  /** Explicit user choice; overrides tier-based ordering. */
+  provider?: Provider;
+}
+
+export function parseProvider(value: unknown): Provider | undefined {
+  return value === "claude" || value === "groq" ? value : undefined;
 }
 
 async function viaClaude(args: CompleteArgs): Promise<string> {
@@ -77,10 +84,10 @@ export async function complete(args: CompleteArgs): Promise<string> {
     );
   }
 
-  const order =
-    args.tier === "fast"
-      ? ([groq && "groq", claude && "claude"] as const)
-      : ([claude && "claude", groq && "groq"] as const);
+  const preferGroq = args.provider ? args.provider === "groq" : args.tier === "fast";
+  const order = preferGroq
+    ? ([groq && "groq", claude && "claude"] as const)
+    : ([claude && "claude", groq && "groq"] as const);
 
   let lastError: unknown;
   for (const provider of order) {

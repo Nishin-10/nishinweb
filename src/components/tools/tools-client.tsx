@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea, Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { downloadDocx, downloadPdf } from "@/lib/export";
+import { getModelPref, ModelPicker } from "@/components/ui/model-picker";
 
 type Tab = "summarize" | "write";
 
@@ -94,8 +95,8 @@ export function ToolsClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
           mode === "summarize"
-            ? { mode, text: docText }
-            : { mode, instructions, text: reference }
+            ? { mode, text: docText, provider: getModelPref() }
+            : { mode, instructions, text: reference, provider: getModelPref() }
         ),
       });
       const data = (await res.json()) as { result?: string; error?: string };
@@ -111,6 +112,9 @@ export function ToolsClient() {
 
   return (
     <div className="mx-auto max-w-3xl">
+      <div className="mb-4 flex justify-end">
+        <ModelPicker className="w-56" />
+      </div>
       <div role="tablist" aria-label="Tools" className="mb-6 flex gap-1 rounded-md bg-surface-2 p-1 sm:w-fit">
         {(
           [
