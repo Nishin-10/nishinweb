@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import {
   ArrowDown, Briefcase, Compass, Gamepad2, Newspaper, Trophy, Wrench,
@@ -19,10 +20,28 @@ const LINES: { words: string[]; gradient?: boolean }[] = [
   { words: ["Unwind", "better."], gradient: true },
 ];
 
+/** Aurora hues follow the clock: dawn cyan, day violet, dusk ember. */
+function timePalette(): { a: string; b: string; label: string } {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 11) return { a: "#2ed3e6", b: "#6355f2", label: "morning" };
+  if (h >= 11 && h < 18) return { a: "#6355f2", b: "#0ea5b7", label: "day" };
+  return { a: "#f0736b", b: "#8577ff", label: "night" };
+}
+
 export function Hero() {
   const reduce = useReducedMotion();
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
+  const [live, setLive] = useState(false);
+  const [palette] = useState(timePalette);
+
+  // Living orb: glows amber while a World Cup match is actually in play.
+  useEffect(() => {
+    fetch("/api/football?league=worldcup")
+      .then((r) => r.json())
+      .then((d) => setLive((d.matches ?? []).some((m: { status: string }) => m.status === "in")))
+      .catch(() => {});
+  }, []);
   const orbX = useSpring(useTransform(mx, [0, 1], [-24, 24]), { stiffness: 60, damping: 20 });
   const orbY = useSpring(useTransform(my, [0, 1], [-16, 16]), { stiffness: 60, damping: 20 });
 
@@ -50,12 +69,19 @@ export function Hero() {
         className="pointer-events-none absolute right-[4%] top-1/2 hidden -translate-y-1/2 md:block lg:right-[8%]"
       >
         <motion.div
-          animate={reduce ? {} : { scale: [1, 1.045, 1] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="relative flex h-[22rem] w-[22rem] items-center justify-center rounded-full
-            bg-[radial-gradient(circle_at_35%_30%,color-mix(in_oklab,var(--accent)_28%,var(--surface)),color-mix(in_oklab,var(--accent-2)_18%,var(--surface))_55%,var(--surface)_100%)]
-            shadow-[0_0_120px_-20px_var(--accent)] lg:h-[26rem] lg:w-[26rem]"
+          animate={reduce ? {} : { scale: live ? [1, 1.07, 1] : [1, 1.045, 1] }}
+          transition={{ duration: live ? 2.4 : 7, repeat: Infinity, ease: "easeInOut" }}
+          className="relative flex h-[22rem] w-[22rem] items-center justify-center rounded-full lg:h-[26rem] lg:w-[26rem]"
+          style={{
+            background: `radial-gradient(circle at 35% 30%, color-mix(in oklab, ${live ? "#f5a623" : palette.a} 28%, var(--surface)), color-mix(in oklab, ${palette.b} 18%, var(--surface)) 55%, var(--surface) 100%)`,
+            boxShadow: `0 0 120px -20px ${live ? "#f5a623" : palette.a}`,
+          }}
         >
+          {live && (
+            <span className="absolute -top-2 rounded-full bg-warning-soft px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-warning">
+              ● match live
+            </span>
+          )}
           {/* Orbiting module icons: the whole app circling its core */}
           <motion.div
             animate={reduce ? {} : { rotate: 360 }}
