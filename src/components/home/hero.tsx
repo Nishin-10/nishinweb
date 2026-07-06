@@ -8,10 +8,10 @@ import {
 const ORBIT_ICONS = [Briefcase, Compass, Gamepad2, Trophy, Newspaper, Wrench];
 
 const META = [
-  { label: "Modules", value: "6" },
-  { label: "Games", value: "9" },
+  { label: "Modules", value: "7" },
+  { label: "Games", value: "11" },
   { label: "Languages", value: "10+" },
-  { label: "Engine", value: "Claude" },
+  { label: "Status", value: "Live" },
 ];
 
 const LINES: { words: string[]; gradient?: boolean }[] = [
